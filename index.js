@@ -8,9 +8,9 @@ var update_interval = 5000; // in ms
 
 // Wait for onReady() promise to fulfill before using framework
 app.onReady().then(() => {
-    log("App ready. Instance", app);
+    console.log("App ready. Instance", app);
 }).catch((errorcode) =>  {
-    log("Error with code: ", Webex.Application.ErrorCodes[errorcode])
+    console.log("Error with code: ", Webex.Application.ErrorCodes[errorcode])
 });
 
 
@@ -65,7 +65,7 @@ function submitForm() {
         return response.json();
         })
     .catch(error => {
-        console.error("There was a problem with the send operation:", error);
+        console.log("There was a problem with the send operation:", error);
     });  
     read(); 
 }

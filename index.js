@@ -35,7 +35,7 @@ var intervalId = window.setInterval(function(){
 
     console.log('xhr.status=',xhr.status);
     console.log('response=',xhr.responseText);
-  }, 5000);
+  }, 10000);
 
 
 // Send function to send keys/ids to the REST API 
@@ -84,38 +84,38 @@ function submitForm() {
 
 
 // Read function to call rest api and update HTML plugin 
-function read() {
-    console.log("We in the READ function again BOIS"); 
-    if (!flag) { 
-        setTimeout(function() {
-            read(); 
-        }, update_interval); 
-    } // Haven't received keys, so return! 
-    console.log("Made it past the flag check, so we're chilling!"); 
-    fetch(REST_API_READ_CONTAINERS)
-    .then(response => response.json())
-    .then((data) => {
-      let summary = data.summary 
-      let summaryContainer = document.getElementById('summaryContainer')
-      summaryContainer.innerHTML = `<div>${summary}</div>`
+// function read() {
+//     console.log("We in the READ function again BOIS"); 
+//     if (!flag) { 
+//         setTimeout(function() {
+//             read(); 
+//         }, update_interval); 
+//     } // Haven't received keys, so return! 
+//     console.log("Made it past the flag check, so we're chilling!"); 
+//     fetch(REST_API_READ_CONTAINERS)
+//     .then(response => response.json())
+//     .then((data) => {
+//       let summary = data.summary 
+//       let summaryContainer = document.getElementById('summaryContainer')
+//       summaryContainer.innerHTML = `<div>${summary}</div>`
 
-      let actionables = data.actionables 
-      let actionablesContainer = document.getElementById('actionablesContainer')
-      actionablesContainer.innerHTML = `<div>${actionables}</div>`
+//       let actionables = data.actionables 
+//       let actionablesContainer = document.getElementById('actionablesContainer')
+//       actionablesContainer.innerHTML = `<div>${actionables}</div>`
 
-      let time = data.time 
-      let timeContainer = document.getElementById('timeContainer')
-      timeContainer.innerHTML = `<div>${time}</div>`
+//       let time = data.time 
+//       let timeContainer = document.getElementById('timeContainer')
+//       timeContainer.innerHTML = `<div>${time}</div>`
 
-    //   let uncertainty = data.uncertainty 
-    //   let uncertaintyContainer = document.getElementById('uncertaintyContainer')
-    //   uncertaintyContainer.innerHTML = `<div>${uncertainty}</div>`
-    })
+//     //   let uncertainty = data.uncertainty 
+//     //   let uncertaintyContainer = document.getElementById('uncertaintyContainer')
+//     //   uncertaintyContainer.innerHTML = `<div>${uncertainty}</div>`
+//     })
 
-    setTimeout(function() {
-        read(); 
-    }, update_interval);
-}
+//     setTimeout(function() {
+//         read(); 
+//     }, update_interval);
+// }
 
 
 // Utility function to log app messages

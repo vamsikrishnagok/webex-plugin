@@ -25,10 +25,12 @@ var ACCESSTOKEN = "";
 
 var intervalId = window.setInterval(function(){
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://127.0.0.1:5000/proc", true);
+    xhr.open("POST", "http://127.0.0.1:3000/summary", true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({
-        value: final_transcript
+        "model": "Bart",
+        "function":"summarize_text",
+        "content":final_transcript
     }));
 
     console.log('xhr.status=',xhr.status);

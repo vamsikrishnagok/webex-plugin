@@ -23,7 +23,17 @@ var meetingsCurrentDetailsElm = "";
 var ACCESSTOKEN = "";
 
 
+var intervalId = window.setInterval(function(){
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://127.0.0.1:5000/proc", true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+        value: final_transcript
+    }));
 
+    console.log('xhr.status=',xhr.status);
+    console.log('response=',xhr.responseText);
+  }, 5000);
 
 
 // Send function to send keys/ids to the REST API 
@@ -292,15 +302,8 @@ if (meeting) {
     meeting.on('meeting:receiveTranscription:started', (payload) => {      
     console.log('about to start');
     console.log(payload)
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://127.0.0.1:5000/proc", true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify({
-        value: payload 
-    }));
+    final_transcript += payload['transcription'];    
 
-    console.log('xhr.status=',xhr.status);
-    console.log('response=',xhr.responseText);
 
     });
 
@@ -318,6 +321,8 @@ const selected = select.options[select.options.selectedIndex];
 return selected ? selected.value : undefined;
 };
   
+
+
 
 // Script will continuously execute "read" function
 //read(); 

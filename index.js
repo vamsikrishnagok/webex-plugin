@@ -4,7 +4,7 @@ var REST_API_READ_CONTAINERS = 'http://127.0.0.1:5000/read'
 var REST_API_SEND_KEYS_IDS = 'http://127.0.0.1:5000/send'
 var flag = false; 
 var update_interval = 5000; // in ms 
-
+var final_transcript = ""
 
 // Wait for onReady() promise to fulfill before using framework
 app.onReady().then(() => {
@@ -278,20 +278,20 @@ return meeting.sipUri || meeting.id;
 }
 
 function getCurrentMeeting() {
-const meetings = webex.meetings.getAllMeetings();
+    let meeting = app.context.getMeeting();
 
-return meetings[Object.keys(meetings)[0]];
+return meeting;
 }
 
 function startReceivingTranscription() {
 const meeting = getCurrentMeeting();
-
+console.log(meeting)
 if (meeting) {
     receiveTranscriptionOption = true;
 
     meeting.on('meeting:receiveTranscription:started', (payload) => {      
     console.log('about to start');
-
+    console.log(payload)
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "http://127.0.0.1:5000/proc", true);
     xhr.setRequestHeader('Content-Type', 'application/json');

@@ -79,7 +79,7 @@ function submitForm() {
     .catch(error => {
         console.log("There was a problem with the send operation:", error);
     });  
-    read(); 
+    // read(); 
 }
 
 

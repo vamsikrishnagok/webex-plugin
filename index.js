@@ -35,6 +35,7 @@ var intervalId = window.setInterval(function(){
 
     console.log('xhr.status=',xhr.status);
     console.log('response=',xhr.responseText);
+    console.log(final_transcript)
   }, 10000);
 
 
@@ -304,6 +305,9 @@ if (meeting) {
     meeting.on('meeting:receiveTranscription:started', (payload) => {      
     console.log('about to start');
     console.log(payload)
+    
+    let actionablesContainer = document.getElementById('actionablesContainer')
+    actionablesContainer.innerHTML = `<div>${payload['transcription']}</div>`
     final_transcript += payload['transcription'];    
 
 

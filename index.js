@@ -7,12 +7,6 @@ let receiveTranscriptionOption;
 const meetingsListElm = [];
 var meetingsCurrentDetailsElm = "";
 // Wait for onReady() promise to fulfill before using framework
-app.onReady().then(() => {
-    log("App ready. Instance", app);
-    registerMeeting(); 
-}).catch((errorcode) =>  {
-    log("Error with code: ", Webex.Application.ErrorCodes[errorcode])
-});
 
 function registerMeeting() {
 
@@ -121,6 +115,15 @@ function collectMeetings() {
         );
         });
     }
+    
+app.onReady().then(() => {
+    log("App ready. Instance", app);
+    registerMeeting(); 
+}).catch((errorcode) =>  {
+    log("Error with code: ", Webex.Application.ErrorCodes[errorcode])
+});
+
+
 
 // Button click handler to set share URL
 function handleSetShare() {

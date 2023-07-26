@@ -24,10 +24,9 @@ webex.meetings.register()
     throw err;
   });
 
-console.log("TEST",getCurrentMeeting())
 function getCurrentMeeting() {
     const meetings = webex.meetings.getAllMeetings();
-  
+    console.log(meetings)
     return meetings[Object.keys(meetings)[0]];
   }
 // Utility function to log app messages

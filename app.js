@@ -172,7 +172,7 @@ function collectMeetings() {
 
   webex.meetings.syncMeetings()
     .then(() => new Promise((resolve) => {
-      generalStartReceivingTranscription.disabled = true; // eslint-disable-line no-use-before-define
+      generalStartReceivingTranscription.disabled = false; // eslint-disable-line no-use-before-define
       setTimeout(() => resolve(), 200);
     }))
     .then(() => {
@@ -197,66 +197,6 @@ function collectMeetings() {
     });
 }
 
-function createMeeting() {
-  webex.meetings.create(createMeetingDestinationElm.value)
-    .then((meeting) => {
-      generalStartReceivingTranscription.disabled = false; // eslint-disable-line no-use-before-define
-
-      if (meetingsListElm.childElementCount === 0) {
-        meetingsListElm.innerText = '';
-      }
-
-      meetingsListElm.appendChild(
-        generateMeetingsListItem(meeting)
-      );
-    });
-}
-
-function joinMeeting(meetingId) {
-  const meeting = webex.meetings.getAllMeetings()[meetingId];
-
-  if (!meeting) {
-    throw new Error(`meeting ${meetingId} is invalid or no longer exists`);
-  }
-
-  const joinOptions = {
-    pin: meetingsJoinPinElm.value,
-    moderator: meetingsJoinModeratorElm.checked,
-    moveToResource: false,
-    resourceId: webex.devicemanager._pairedDevice ?
-      webex.devicemanager._pairedDevice.identity.id :
-      undefined,
-    receiveTranscription: receiveTranscriptionOption
-  };
-
-  meeting.join(joinOptions)
-    .then(() => {
-      meetingsCurrentDetailsElm.innerText = meeting.destination ||
-        meeting.sipUri ||
-        meeting.id;
-
-      meetingsLeaveElm.onclick = () => leaveMeeting(meeting.id);
-    });
-}
-
-function leaveMeeting(meetingId) {
-  if (!meetingId) {
-    return;
-  }
-
-  const meeting = webex.meetings.getAllMeetings()[meetingId];
-
-  if (!meeting) {
-    throw new Error(`meeting ${meetingId} is invalid or no longer exists`);
-  }
-
-  meeting.leave()
-    .then(() => {
-      meetingsCurrentDetailsElm.innerText = 'Not currently in a meeting';
-      // eslint-disable-next-line no-use-before-define
-      cleanUpMedia(htmlMediaElements);
-    });
-}
 
 // Meeting Controls Section --------------------------------------------------
 
@@ -368,72 +308,6 @@ function getCurrentMeeting() {
 }
 
 
-function lockMeeting() {
-  const meeting = getCurrentMeeting();
-
-  console.log('MeetingControls#lockMeeting()');
-  if (meeting) {
-    generalControlsLockStatus.innerText = 'Locking meeting...';
-    meeting.lockMeeting()
-      .then(() => {
-        generalControlsLockStatus.innerText = 'Meeting locked!';
-        console.log('MeetingControls#lockMeeting() :: successfully locked meeting');
-      })
-      .catch((error) => {
-        generalControlsLockStatus.innerText = 'Error! See console for details.';
-        console.log('MeetingControls#lockMeeting() :: unable to lock meeting');
-        console.error(error);
-      });
-  }
-  else {
-    console.log('MeetingControls#lockMeeting() :: no valid meeting object!');
-  }
-}
-
-
-function unlockMeeting() {
-  const meeting = getCurrentMeeting();
-
-  if (meeting) {
-    console.log('MeetingControls#unlockMeeting()');
-    generalControlsLockStatus.innerText = 'Unlocking meeting...';
-    meeting.unlockMeeting()
-      .then(() => {
-        generalControlsLockStatus.innerText = 'Meeting unlocked!';
-        console.log('MeetingControls#unlockMeeting() :: successfully unlocked meeting');
-      })
-      .catch((error) => {
-        generalControlsLockStatus.innerText = 'Error! See console for details.';
-        console.log('MeetingControls#unlockMeeting() :: unable to unlock meeting.');
-        console.error(error);
-      });
-  }
-  else {
-    console.log('MeetingControls#unlockMeeting() :: no valid meeting object!');
-  }
-}
-
-function startRecording() {
-  const meeting = getCurrentMeeting();
-
-  if (meeting) {
-    console.log('MeetingControls#startRecording()');
-    generalControlsRecStatus.innerText = 'Recording meeting...';
-    meeting.startRecording()
-      .then(() => {
-        generalControlsRecStatus.innerText = 'Meeting is being recorded!';
-        console.log('MeetingControls#startRecording() :: meeting recording started!');
-      })
-      .catch((error) => {
-        generalControlsRecStatus.innerText = 'Error! See console for details.';
-        console.log('MeetingControls#startRecording() :: unable to record meeting.');
-        console.error(error);
-      });
-  }
-  else {
-    console.log('MeetingControls#startRecording() :: no valid meeting object!');
-  }
-}
 
 function stopReceivingTranscription() {
   const meeting = getCurrentMeeting();
@@ -448,7 +322,7 @@ function startReceivingTranscription() {
   if (meeting) {
     receiveTranscriptionOption = true;
     generalStartReceivingTranscription.innerHTML = 'Subscribed!';
-    generalStartReceivingTranscription.disabled = true;
+    generalStartReceivingTranscription.disabled = false;
     generalStopReceivingTranscription.disabled = false;
     generalTranscriptionContent.innerHTML = '';
 

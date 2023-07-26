@@ -73,7 +73,6 @@ function initWebex() {
   webex.once('ready', () => {
     console.log('Authentication#initWebex() :: Webex Ready');
     registerElm.disabled = false;
-    authStatusElm.innerText = 'Saved';
   });
 }
 
@@ -173,7 +172,7 @@ function collectMeetings() {
 
   webex.meetings.syncMeetings()
     .then(() => new Promise((resolve) => {
-      generalStartReceivingTranscription.disabled = false; // eslint-disable-line no-use-before-define
+      generalStartReceivingTranscription.disabled = true; // eslint-disable-line no-use-before-define
       setTimeout(() => resolve(), 200);
     }))
     .then(() => {

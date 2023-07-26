@@ -9,6 +9,22 @@
     <p>This is the initiator app. Its job is to specify a URL to share. Click <b>Set Share URL</b>, then click either <b>Open for all</b> (when running in a meeting) or <b>Add to tab</b> (when running in a space).</p>
     <button onclick="handleSetShare()">Set Share URL</button>
     <h2>Event Log</h2>
-    <ul id="console" />
+    <pre id="log"></pre>
+
 </body>
+<script>
+  (function () {
+    var old = console.log;
+    var logger = document.getElementById('log');
+    console.log = function () {
+      for (var i = 0; i < arguments.length; i++) {
+        if (typeof arguments[i] == 'object') {
+            logger.innerHTML += (JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + '<br />';
+        } else {
+            logger.innerHTML += arguments[i] + '<br />';
+        }
+      }
+    }
+})();
+</script>
 </html>

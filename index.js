@@ -24,7 +24,7 @@ webex.meetings.register()
     throw err;
   });
 
-log("TEST",getCurrentMeeting())
+console.log("TEST",getCurrentMeeting())
 function getCurrentMeeting() {
     const meetings = webex.meetings.getAllMeetings();
   

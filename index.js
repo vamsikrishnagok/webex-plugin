@@ -11,6 +11,9 @@ if (myAccessToken === 'YOUR_ACCESS_TOKEN') {
 const webex = window.Webex.init({
   credentials: {
     access_token: ACCESSTOKEN
+  },
+  logger: {
+    level: 'debug'
   }
 });
 

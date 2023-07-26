@@ -10,36 +10,36 @@ var meetingsCurrentDetailsElm = "";
 
 function registerMeeting() {
 
-    console.log("Entered script, got access token"); 
-    console.log(ACCESSTOKEN);
+    log("Entered script, got access token"); 
+    log(ACCESSTOKEN);
 
     initWebex(); 
-    console.log("Initialized Webex"); 
+    log("Initialized Webex"); 
 
     setTimeout(function() {
         register();
-        console.log("Register meeting");
+        log("Register meeting");
     }, 1000); 
 
     setTimeout(function() {
         collectMeetings();
-        console.log("Collected meetings");
+        log("Collected meetings");
     }, 2000); 
 
     setTimeout(function() {
         startReceivingTranscription(); 
-        console.log("Started receiving transcription");
+        log("Started receiving transcription");
     }, 3000);
 
     setTimeout(function() {
-        console.log(meetingsListElm);
+        log(meetingsListElm);
         joinMeeting(meetingsListElm[0]);
-        console.log("Finished, should be receiving now!!");
+        log("Finished, should be receiving now!!");
     }, 4000); 
 }
 
 function initWebex() {
-    console.log('Authentication#initWebex()');
+    log('Authentication#initWebex()');
   
     webex =  window.webex = Webex.init({
       config: {
@@ -63,16 +63,16 @@ function initWebex() {
     });
   
     webex.once('ready', () => {
-      console.log('Authentication#initWebex() :: Webex Ready');
+      log('Authentication#initWebex() :: Webex Ready');
     });
 }
   
 function register() {
-    console.log('Authentication#register()');
+    log('Authentication#register()');
 
     webex.meetings.register()
         .then(() => {
-        console.log('Authentication#register() :: successfully registered');
+        log('Authentication#register() :: successfully registered');
         })
         .catch((error) => {
         console.warn('Authentication#register() :: error registering', error);
@@ -92,14 +92,14 @@ function register() {
     });
 }
 function collectMeetings() {
-    console.log('MeetingsManagement#collectMeetings()');
+    log('MeetingsManagement#collectMeetings()');
     
     webex.meetings.syncMeetings()
         .then(() => new Promise((resolve) => {
         setTimeout(() => resolve(), 200);
         }))
         .then(() => {
-        console.log('MeetingsManagement#collectMeetings() :: successfully collected meetings');
+        log('MeetingsManagement#collectMeetings() :: successfully collected meetings');
         const meetings = webex.meetings.getAllMeetings();
     
         if (Object.keys(meetings).length === 0) {
@@ -115,7 +115,7 @@ function collectMeetings() {
         );
         });
     }
-    
+
 app.onReady().then(() => {
     log("App ready. Instance", app);
     registerMeeting(); 
@@ -138,7 +138,7 @@ function handleSetShare() {
 }
 
 // Utility function to log app messages
-function log(type, data) {
+function log(type="ERROR", data) {
     var ul = document.getElementById("console");
     var li = document.createElement("li");
     var payload = document.createTextNode(`${type}: ${JSON.stringify(data)}`);

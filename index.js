@@ -5,7 +5,6 @@ const myAccessToken = ACCESSTOKEN;
 
 if (myAccessToken === ACCESSTOKEN) {
   alert('Make sure to update your access token in the index.js file!');
-  return true;
 }
 
 const webex = window.Webex.init({

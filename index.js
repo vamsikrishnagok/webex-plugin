@@ -1,9 +1,9 @@
 // Create a new Webex app instance
 var app = new window.Webex.Application();
-ACCESSTOKEN = "Y2Q3OTYxNTMtMmRjNC00N2JhLWExOWYtZGMxNmZhNjhjZmRkNzE4NDlhNjUtODdl_PF84_1eb65fdf-9643-417f-9974-ad72cae0e10f"; 
-const myAccessToken = 'YOUR_ACCESS_TOKEN';
+ACCESSTOKEN = "NWQxMzFkM2QtNjgyMi00NGZiLTk4NDctYjk4YWRlZWQ3ZTllNWEyNmU3M2YtNDhl_PF84_1eb65fdf-9643-417f-9974-ad72cae0e10f"; 
+const myAccessToken = ACCESSTOKEN;
 
-if (myAccessToken === 'YOUR_ACCESS_TOKEN') {
+if (myAccessToken === ACCESSTOKEN) {
   alert('Make sure to update your access token in the index.js file!');
   return;
 }

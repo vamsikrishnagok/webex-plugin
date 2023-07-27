@@ -2,12 +2,12 @@
 var app = new window.Webex.Application();
 ACCESSTOKEN = "NWQxMzFkM2QtNjgyMi00NGZiLTk4NDctYjk4YWRlZWQ3ZTllNWEyNmU3M2YtNDhl_PF84_1eb65fdf-9643-417f-9974-ad72cae0e10f"; 
 const myAccessToken = ACCESSTOKEN;
-
+let webex;
 if (myAccessToken === ACCESSTOKEN) {
   alert('Make sure to update your access token in the index.js file!');
 }
 
-const webex = window.Webex.init({
+webex =  window.webex = Webex.init({
   credentials: {
     access_token: ACCESSTOKEN
   },
@@ -15,6 +15,8 @@ const webex = window.Webex.init({
     level: 'debug'
   }
 });
+
+
 
 webex.meetings.register()
   .catch((err) => {

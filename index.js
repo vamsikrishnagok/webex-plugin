@@ -40,7 +40,7 @@ webex.meetings
     if (webex.meetings.regisered) {
       meetings = webex.meetings.getAllMeetings();
       console.log(meetings);
-      current_meeting = obj[Object.keys(meetings)[0]];
+      current_meeting = meetings[Object.keys(meetings)[0]];
       console.log(current_meeting);
       current_meeting.on("meeting:receiveTranscription:started", (payload) => {
         transcript_final_result =

@@ -54,7 +54,7 @@ webex.meetings.register().then(() => {
           (payload) => {
             if ("transcript_final_result" in payload){
               transcript_final_result =
-              transcript_final_result + payload["transcription"];
+              transcript_final_result + ", "+payload["transcription"];
             }
            
             // console.log(payload);

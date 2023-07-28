@@ -52,8 +52,11 @@ webex.meetings.register().then(() => {
         current_meeting.on(
           "meeting:receiveTranscription:started",
           (payload) => {
-            transcript_final_result =
+            if ("transcript_final_result" in payload){
+              transcript_final_result =
               transcript_final_result + payload["transcription"];
+            }
+           
             // console.log(payload);
           }
         );

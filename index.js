@@ -38,10 +38,10 @@ webex.meetings
     }))
     .then(() => {
       console.log('MeetingsManagement#collectMeetings() :: successfully collected meetings');
-      const meetings = webex.meetings.getAllMeetings();
+      meetings = webex.meetings.getAllMeetings();
 
       if (webex.meetings.registered) {
-        meetings = webex.meetings.getAllMeetings();
+        
         console.log(meetings);
         current_meeting = meetings[Object.keys(meetings)[0]];
         console.log(current_meeting);
@@ -58,7 +58,7 @@ webex.meetings
           : undefined,
         receiveTranscription: receiveTranscriptionOption,
       };
-      const meeting = webex.meetings.getAllMeetings()[meetingId];
+      
       current_meeting.join(joinOptions);
     })});
     

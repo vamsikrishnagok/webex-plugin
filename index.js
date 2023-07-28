@@ -70,7 +70,7 @@ webex.meetings.register().then(() => {
     });
 });
 
-const intervalID = setInterval(summary, 10000,);
+const intervalID = setInterval(summary, 10000);
 
 function summary() {
   // WARNING: For POST requests, body is set to null by browsers.

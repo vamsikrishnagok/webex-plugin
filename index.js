@@ -32,12 +32,16 @@ webex.once("ready", () => {
 webex.meetings
   .register()
   .then(() => {
+    console.log("successful registered")
     webex.meetings.syncMeetings();
   })
   .finally(() => {
+    console.log(webex.meetings.regisered)
     if (webex.meetings.regisered) {
       meetings = webex.meetings.getAllMeetings();
+      console.log(meetings);
       current_meeting = obj[Object.keys(meetings)[0]];
+      console.log(current_meeting);
       current_meeting.on("meeting:receiveTranscription:started", (payload) => {
         transcript_final_result =
           transcript_final_result + payload["transcription"];

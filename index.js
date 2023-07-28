@@ -1,40 +1,49 @@
-// Create a new Webex app instance
-var app = new window.Webex.Application();
-ACCESSTOKEN = "NWQxMzFkM2QtNjgyMi00NGZiLTk4NDctYjk4YWRlZWQ3ZTllNWEyNmU3M2YtNDhl_PF84_1eb65fdf-9643-417f-9974-ad72cae0e10f"; 
-const myAccessToken = ACCESSTOKEN;
 let webex;
-if (myAccessToken === ACCESSTOKEN) {
-  alert('Make sure to update your access token in the index.js file!');
-}
-
-webex =  window.webex = Webex.init({
-  credentials: {
-    access_token: ACCESSTOKEN
+let receiveTranscriptionOption = true;
+let transcript_final_result = ""
+let meetings;
+let current_meeting;
+webex = window.webex = Webex.init({
+  config: {
+    logger: {
+      level: 'debug'
+    },
+    meetings: {
+      reconnection: {
+        enabled: true
+      },
+      enableRtx: true,
+      experimental: {
+        enableUnifiedMeetings: true
+      }
+    }
+    // Any other sdk config we need
   },
-  logger: {
-    level: 'debug'
+  credentials: {
+    access_token: "MjA1ZmUzMzgtYjgzMS00ZmFhLWI3ODAtZDdlOTRlNTg1ZWUwZmRjZTEzZWUtZGRh_PF84_1eb65fdf-9643-417f-9974-ad72cae0e10f"
   }
 });
 
-
+webex.once('ready', () => {
+  console.log('Authentication#initWebex() :: Webex Ready');
+});
 
 webex.meetings.register()
-  .catch((err) => {
-    log("err",err);
-    alert(err);
-    throw err;
-  });
+webex.meetings.syncMeetings()
+meetings = webex.meetings.getAllMeetings();
+current_meeting = obj[Object.keys(meetings)[0]];
 
-function getCurrentMeeting() {
-    const meetings = webex.meetings.getAllMeetings();
-    console.log(meetings)
-    return meetings[Object.keys(meetings)[0]];
-  }
-// Utility function to log app messages
-function log(type="ERROR", data) {
-    var ul = document.getElementById("console");
-    var li = document.createElement("li");
-    var payload = document.createTextNode(`${type}: ${JSON.stringify(data)}`);
-    li.appendChild(payload)
-    ul.prepend(li);
-}
+current_meeting.on('meeting:receiveTranscription:started', (payload) => {
+  transcript_final_result = transcript_final_result + payload["transcription"]
+  console.log(payload)
+});
+
+const joinOptions = {
+  moveToResource: false,
+  resourceId: webex.devicemanager._pairedDevice ?
+    webex.devicemanager._pairedDevice.identity.id :
+    undefined,
+  receiveTranscription: receiveTranscriptionOption
+};
+
+current_meeting.join(joinOptions)

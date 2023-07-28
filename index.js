@@ -21,7 +21,7 @@ webex = window.webex = Webex.init({
   },
   credentials: {
     access_token:
-      "MjA1ZmUzMzgtYjgzMS00ZmFhLWI3ODAtZDdlOTRlNTg1ZWUwZmRjZTEzZWUtZGRh_PF84_1eb65fdf-9643-417f-9974-ad72cae0e10f",
+      "MWFlNzU3NjgtOTFlZS00MDVlLTg3M2MtMGU2YjgxOWRiNThiMWFmM2ZmODQtZDU4_PF84_1eb65fdf-9643-417f-9974-ad72cae0e10f",
   },
 });
 

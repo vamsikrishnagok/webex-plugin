@@ -1,6 +1,6 @@
 let webex;
 let receiveTranscriptionOption = true;
-let transcript_final_result = "";
+let transcript_final_result = {"transcript":""};
 let meetings;
 let current_meeting;
 webex = window.webex = Webex.init({
@@ -53,8 +53,8 @@ webex.meetings.register().then(() => {
           "meeting:receiveTranscription:started",
           (payload) => {
             if ("transcript_final_result" in payload){
-              transcript_final_result =
-              transcript_final_result + ", "+payload["transcription"];
+              transcript_final_result["transcript"] =
+              transcript_final_result["transcript"] + ", " + payload["transcription"];
             }
            
             console.log(payload);
@@ -82,7 +82,7 @@ function summary() {
     "method_type": "module_function",
     "method_name": "process_transcript",
     "args": [
-      transcript_final_result
+      transcript_final_result["transcript"]
     ]
   });
   
@@ -109,7 +109,7 @@ function summary() {
   
   xhr.open("POST", "http://127.0.0.1:3000/dynamic_query");
   xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+  xhr.setRequestHeader('Access-Control-Allow-Origin','*');
   xhr.send(data);
 
 

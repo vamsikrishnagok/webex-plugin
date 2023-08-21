@@ -73,28 +73,55 @@ webex.meetings.register().then(() => {
     });
 });
 
-const intervalID = setInterval(summary, 10000);
+const intervalID = setInterval(summary, 100000);
 
 function summary() {
   // WARNING: For POST requests, body is set to null by browsers.
   var data = JSON.stringify({
-    model: "Bart",
-    function: "summarize_text",
-    content:transcript_final_result,
+    "module_name": "backend.server.utils.openai_utils",
+    "method_type": "module_function",
+    "method_name": "process_transcript",
+    "args": [
+      transcript_final_result
+    ]
   });
-  console.log(transcript_final_result)
-
+  
   var xhr = new XMLHttpRequest();
-  xhr.withCredentials = false;
-
-  xhr.addEventListener("readystatechange", function () {
-    if (this.readyState === 4) {
+  xhr.withCredentials = true;
+  
+  xhr.addEventListener("readystatechange", function() {
+    if(this.readyState === 4) {
       console.log(this.responseText);
+      let summary = this.responseText["result"]["summary"] 
+      let summaryContainer = document.getElementById('summaryContainer')
+      summaryContainer.innerHTML = `<div>${summary}</div>`
+
+      let actionables = this.responseText["result"]["actionables"]
+      let actionablesContainer = document.getElementById('actionablesContainer')
+      actionablesContainer.innerHTML = `<div>${actionables}</div>`
+
+      let time = this.responseText["result"]["agenda"]
+      let timeContainer = document.getElementById('timeContainer')
+      timeContainer.innerHTML = `<div>${time}</div>`
     }
   });
-
-  xhr.open("POST", "http://127.0.0.1:3000/summary");
+  
+  xhr.open("POST", "http://127.0.0.1:3000//dynamic_query");
   xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.setRequestHeader( 'Access-Control-Allow-Origin', '*');
+  xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
   xhr.send(data);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

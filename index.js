@@ -55,9 +55,11 @@ webex.meetings.register().then(() => {
             if ("transcript_final_result" in payload){
               transcript_final_result["transcript"] =
               transcript_final_result["transcript"] + ", " + payload["transcription"];
+              summary()
             }
            
             console.log(payload);
+            
           }
         );
       }
@@ -73,7 +75,7 @@ webex.meetings.register().then(() => {
     });
 });
 
-const intervalID = setInterval(summary, 100000);
+// const intervalID = setInterval(summary, 100000);
 
 function summary() {
   // WARNING: For POST requests, body is set to null by browsers.

@@ -38,10 +38,10 @@ function summary() {
     }
   });
   
-  // xhr.open("POST", "http://127.0.0.1:3000/dynamic_query");
-  // xhr.setRequestHeader("Content-Type", "application/json");
-  // xhr.setRequestHeader('Access-Control-Allow-Origin','*');
-  // xhr.send(data);
+  xhr.open("POST", "http://127.0.0.1:3000/dynamic_query");
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.setRequestHeader('Access-Control-Allow-Origin','*');
+  xhr.send(data);
 }
 
 

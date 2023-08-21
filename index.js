@@ -91,8 +91,8 @@ function summary() {
   
   xhr.addEventListener("readystatechange", function() {
     if(this.readyState === 4) {
-      console.log(this.responseText);
       response = JSON.parse(this.responseText)
+      console.log(response);
       let summary = response["result"]["summary"] 
       let summaryContainer = document.getElementById('summaryContainer')
       summaryContainer.innerHTML = `<div>${summary}</div>`

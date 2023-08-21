@@ -95,12 +95,11 @@ webex.meetings.register().then(() => {
         current_meeting.on(
           "meeting:receiveTranscription:started",
           (payload) => {
-            if ("transcript_final_result" in payload){
+            if (payload["type"]=="transcript_final_result"){
               transcript_final_result["transcript"] = transcript_final_result["transcript"] + ", " + payload["transcription"];
-              summary()
+              
             }
            
-            console.log(payload);
             console.log(transcript_final_result)
             
           }
@@ -118,5 +117,5 @@ webex.meetings.register().then(() => {
     });
 });
 
-// const intervalID = setInterval(summary, 100000);
+const intervalID = setInterval(summary, 100000);
 

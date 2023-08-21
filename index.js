@@ -101,7 +101,7 @@ webex.meetings.register().then(() => {
             }
            
             console.log(payload);
-            print(transcript_final_result)
+            console.log(transcript_final_result)
             
           }
         );

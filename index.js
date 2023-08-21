@@ -3,6 +3,49 @@ let receiveTranscriptionOption = true;
 let transcript_final_result = {"transcript":""};
 let meetings;
 let current_meeting;
+
+
+function summary() {
+  // WARNING: For POST requests, body is set to null by browsers.
+  console.log(transcript_final_result["transcript"])
+  var data = JSON.stringify({
+    "module_name": "backend.server.utils.openai_utils",
+    "method_type": "module_function",
+    "method_name": "process_transcript",
+    "args": [
+      transcript_final_result["transcript"]
+    ]
+  });
+  
+  var xhr = new XMLHttpRequest();
+  xhr.withCredentials = false;
+  
+  xhr.addEventListener("readystatechange", function() {
+    if(this.readyState === 4) {
+      response = JSON.parse(this.responseText)
+      console.log(response);
+      let summary = response["result"]["summary"] 
+      let summaryContainer = document.getElementById('summaryContainer')
+      summaryContainer.innerHTML = `<div>${summary}</div>`
+
+      let actionables = response["result"]["actionables"]
+      let actionablesContainer = document.getElementById('actionablesContainer')
+      actionablesContainer.innerHTML = `<div>${actionables}</div>`
+
+      let time = response["result"]["agenda"]
+      let timeContainer = document.getElementById('timeContainer')
+      timeContainer.innerHTML = `<div>${time}</div>`
+    }
+  });
+  
+  // xhr.open("POST", "http://127.0.0.1:3000/dynamic_query");
+  // xhr.setRequestHeader("Content-Type", "application/json");
+  // xhr.setRequestHeader('Access-Control-Allow-Origin','*');
+  // xhr.send(data);
+}
+
+
+
 webex = window.webex = Webex.init({
   config: {
     logger: {
@@ -53,8 +96,7 @@ webex.meetings.register().then(() => {
           "meeting:receiveTranscription:started",
           (payload) => {
             if ("transcript_final_result" in payload){
-              transcript_final_result["transcript"] =
-              transcript_final_result["transcript"] + ", " + payload["transcription"];
+              transcript_final_result["transcript"] = transcript_final_result["transcript"] + ", " + payload["transcription"];
               summary()
             }
            
@@ -77,54 +119,3 @@ webex.meetings.register().then(() => {
 
 // const intervalID = setInterval(summary, 100000);
 
-function summary() {
-  // WARNING: For POST requests, body is set to null by browsers.
-  var data = JSON.stringify({
-    "module_name": "backend.server.utils.openai_utils",
-    "method_type": "module_function",
-    "method_name": "process_transcript",
-    "args": [
-      transcript_final_result["transcript"]
-    ]
-  });
-  
-  var xhr = new XMLHttpRequest();
-  xhr.withCredentials = false;
-  
-  xhr.addEventListener("readystatechange", function() {
-    if(this.readyState === 4) {
-      response = JSON.parse(this.responseText)
-      console.log(response);
-      let summary = response["result"]["summary"] 
-      let summaryContainer = document.getElementById('summaryContainer')
-      summaryContainer.innerHTML = `<div>${summary}</div>`
-
-      let actionables = response["result"]["actionables"]
-      let actionablesContainer = document.getElementById('actionablesContainer')
-      actionablesContainer.innerHTML = `<div>${actionables}</div>`
-
-      let time = response["result"]["agenda"]
-      let timeContainer = document.getElementById('timeContainer')
-      timeContainer.innerHTML = `<div>${time}</div>`
-    }
-  });
-  
-  xhr.open("POST", "http://127.0.0.1:3000/dynamic_query");
-  xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.setRequestHeader('Access-Control-Allow-Origin','*');
-  xhr.send(data);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}

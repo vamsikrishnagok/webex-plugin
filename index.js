@@ -57,7 +57,7 @@ webex.meetings.register().then(() => {
               transcript_final_result + ", "+payload["transcription"];
             }
            
-            // console.log(payload);
+            console.log(payload);
           }
         );
       }
@@ -106,7 +106,7 @@ function summary() {
     }
   });
   
-  xhr.open("POST", "http://127.0.0.1:3000//dynamic_query");
+  xhr.open("POST", "http://127.0.0.1:3000/dynamic_query");
   xhr.setRequestHeader("Content-Type", "application/json");
   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
   xhr.send(data);

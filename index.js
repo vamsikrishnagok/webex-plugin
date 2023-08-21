@@ -73,7 +73,7 @@ webex.meetings.register().then(() => {
     });
 });
 
-const intervalID = setInterval(summary, 10000);
+const intervalID = setInterval(summary, 100000);
 
 function summary() {
   // WARNING: For POST requests, body is set to null by browsers.
@@ -92,15 +92,16 @@ function summary() {
   xhr.addEventListener("readystatechange", function() {
     if(this.readyState === 4) {
       console.log(this.responseText);
-      let summary = this.responseText["result"]["summary"] 
+      response = JSON.parse(this.responseText)
+      let summary = response["result"]["summary"] 
       let summaryContainer = document.getElementById('summaryContainer')
       summaryContainer.innerHTML = `<div>${summary}</div>`
 
-      let actionables = this.responseText["result"]["actionables"]
+      let actionables = response["result"]["actionables"]
       let actionablesContainer = document.getElementById('actionablesContainer')
       actionablesContainer.innerHTML = `<div>${actionables}</div>`
 
-      let time = this.responseText["result"]["agenda"]
+      let time = response["result"]["agenda"]
       let timeContainer = document.getElementById('timeContainer')
       timeContainer.innerHTML = `<div>${time}</div>`
     }

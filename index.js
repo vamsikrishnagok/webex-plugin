@@ -45,14 +45,16 @@ function summary() {
 }
 
 // Endpoint should be changed based on where server hosted
-await fetch("http://localhost:3000/config")
-  .then((response) => response.json())
-  .then((json) => {
-    console.log(json)
-    WEBEX_ACCESS_TOKEN = json.WEBEX_ACCESS_TOKEN
-    
-  });
-
+async function getConfig(){
+   fetch("http://localhost:3000/config")
+    .then((response) => response.json())
+    .then((json) => {
+      console.log(json)
+      WEBEX_ACCESS_TOKEN = json.WEBEX_ACCESS_TOKEN
+      return json
+    });
+}
+config = await getConfig()
 console.log(WEBEX_ACCESS_TOKEN)
 
 webex = window.webex = Webex.init({

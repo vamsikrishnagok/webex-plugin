@@ -60,7 +60,6 @@ function bot_response() {
 
   xhr.open("POST", "https://webexapis.com/v1/messages");
   xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.setRequestHeader('Access-Control-Allow-Origin','*');
   xhr.setRequestHeader('Authorization',"Bearer YmYwMTNkYjctZTNhZS00MDhkLWEzMzktMjk5YTUwNTE2NzFlOGMyZGZiODEtNmI4_PF84_1eb65fdf-9643-417f-9974-ad72cae0e10f");
   xhr.send(data);
 }

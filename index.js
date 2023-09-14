@@ -3,13 +3,13 @@ let receiveTranscriptionOption = true;
 let transcript_final_result = {"transcript":""};
 let meetings;
 let current_meeting;
-let WEBEX_ACCESS_TOKEN;
+let actionables;
 
 function summary() {
   // WARNING: For POST requests, body is set to null by browsers.
   console.log(transcript_final_result["transcript"])
   var data = JSON.stringify({
-    "module_name": "backend.server.utils.openai_utils",
+    "module_name": "openai",
     "method_type": "module_function",
     "method_name": "process_transcript",
     "args": [
@@ -28,7 +28,7 @@ function summary() {
       let summaryContainer = document.getElementById('summaryContainer')
       summaryContainer.innerHTML = `<div>${summary}</div>`
 
-      let actionables = response["result"]["actionables"]
+      actionables = response["result"]["actionables"]
       let actionablesContainer = document.getElementById('actionablesContainer')
       actionablesContainer.innerHTML = `<div>${actionables}</div>`
 
@@ -44,18 +44,28 @@ function summary() {
   xhr.send(data);
 }
 
-// Endpoint should be changed based on where server hosted
-async function getConfig(){
-   fetch("http://localhost:3000/config")
-    .then((response) => response.json())
-    .then((json) => {
-      console.log(json)
-      WEBEX_ACCESS_TOKEN = json.WEBEX_ACCESS_TOKEN
-      return json
-    });
+function bot_response() {
+  // WARNING: For POST requests, body is set to null by browsers.
+  console.log("sending actionables to bot")
+  var data = JSON.stringify({
+    "toPersonEmail": "blazetranscriptionbot@webex.bot",
+    "text": actionables,
+    
+  });
+  
+  var xhr = new XMLHttpRequest();
+  xhr.withCredentials = false;
+  
+  
+
+  xhr.open("POST", "https://webexapis.com/v1/messages");
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.setRequestHeader('Access-Control-Allow-Origin','*');
+  xhr.setRequestHeader('Authorization',"Bearer YmYwMTNkYjctZTNhZS00MDhkLWEzMzktMjk5YTUwNTE2NzFlOGMyZGZiODEtNmI4_PF84_1eb65fdf-9643-417f-9974-ad72cae0e10f");
+  xhr.send(data);
 }
-config = await getConfig()
-console.log(WEBEX_ACCESS_TOKEN)
+
+
 
 webex = window.webex = Webex.init({
   config: {
@@ -75,9 +85,10 @@ webex = window.webex = Webex.init({
   },
   credentials: {
     access_token:
-    WEBEX_ACCESS_TOKEN,
+      "",
   },
 });
+
 webex.once("ready", () => {
   console.log("Authentication#initWebex() :: Webex Ready");
 });
@@ -127,6 +138,6 @@ webex.meetings.register().then(() => {
     });
 });
 
-
 const intervalID = setInterval(summary, 100000);
 
+const botIntervalID = setInterval(bot_response, 100000);

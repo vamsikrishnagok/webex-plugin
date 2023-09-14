@@ -3,7 +3,7 @@ let receiveTranscriptionOption = true;
 let transcript_final_result = {"transcript":""};
 let meetings;
 let current_meeting;
-let actionables;
+let actionables="";
 
 function summary() {
   // WARNING: For POST requests, body is set to null by browsers.
@@ -35,6 +35,8 @@ function summary() {
       let time = response["result"]["agenda"]
       let timeContainer = document.getElementById('timeContainer')
       timeContainer.innerHTML = `<div>${time}</div>`
+
+      bot_response()
     }
   });
   
@@ -47,7 +49,7 @@ function summary() {
 function bot_response() {
   // WARNING: For POST requests, body is set to null by browsers.
   console.log("sending actionables to bot")
-  var data = JSON.stringify({
+  let data = JSON.stringify({
     "toPersonEmail": "blazetranscriptionbot@webex.bot",
     "text": actionables,
     
@@ -139,4 +141,4 @@ webex.meetings.register().then(() => {
 
 const intervalID = setInterval(summary, 100000);
 
-const botIntervalID = setInterval(bot_response, 100000);
+// const botIntervalID = setInterval(bot_response, 200000);

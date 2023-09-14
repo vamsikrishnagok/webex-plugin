@@ -139,6 +139,6 @@ webex.meetings.register().then(() => {
     });
 });
 
-const intervalID = setInterval(summary, 100000);
+const intervalID = setInterval(summary, 20000);
 
 // const botIntervalID = setInterval(bot_response, 200000);

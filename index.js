@@ -75,7 +75,7 @@ function bot_response() {
 
   xhr.open("POST", "https://webexapis.com/v1/messages");
   xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.setRequestHeader('Authorization',"Bearer ${ACCESS_TOKEN}");
+  xhr.setRequestHeader('Authorization',`Bearer ${ACCESS_TOKEN}`);
   xhr.send(data);
 }
 

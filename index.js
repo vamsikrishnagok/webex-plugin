@@ -87,7 +87,7 @@ function submitForm() {
 
   // Call big scrip tto use WebexID key to register the mtg 
 
-  ACCESSTOKEN = webexId; 
+  ACCESS_TOKEN = webexId; 
   registerMeeting();
 
   if(is_bot===true){
@@ -100,7 +100,7 @@ function submitForm() {
 function registerMeeting() {
 
   console.log("Entered script, got access token"); 
-  console.log(ACCESSTOKEN);
+  console.log(ACCESS_TOKEN);
 
   initWebex(); 
   console.log("Initialized Webex"); 

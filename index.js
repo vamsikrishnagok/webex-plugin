@@ -7,7 +7,8 @@ let actionables="";
 var ACCESS_TOKEN = "";
 let is_bot = false;
 let botEmailID = "";
-let time_interval = 10000;
+let time_interval = 60000;
+let interval = 1
 let botIntervalID;
 
 function summary() {
@@ -79,7 +80,7 @@ function submitForm() {
 
   if (botEmailID !== "") {
     is_bot = true
-    if (interval !==""){
+    if (interval !== ""){
       time_interval = 60000 * interval
     }
   }

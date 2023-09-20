@@ -52,9 +52,10 @@ function summary() {
   xhr.send(data);
 }
 
-(function bot_response() {
+
+function bot_response() {
   // WARNING: For POST requests, body is set to null by browsers. "blazetranscriptionbot@webex.bot"
-  if(is_bot===true){
+  
     console.log("sending actionables to bot")
     let data = JSON.stringify({
       "toPersonEmail": botEmailID ,
@@ -71,15 +72,15 @@ function summary() {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader('Authorization',`Bearer ${ACCESS_TOKEN}`);
     xhr.send(data);
-  }
-    setTimeout(bot_response, time_interval);
-})()
+  
+  
+}
 
 // Send function to send keys/ids to the REST API 
 function submitForm() {
   var webexId = document.getElementById("access-token").value;
   botEmailID = document.getElementById("bot-email-id").value;
-  interval = document.getElementById("bot-email-id").value;
+  interval = document.getElementById("time-interval").value;
 
   if (botEmailID !== "") {
     is_bot = true
@@ -87,8 +88,12 @@ function submitForm() {
       time_interval = 60000 * interval
     }
   }
- 
-
+  if(is_bot===true){
+    if(!botIntervalID){
+      botIntervalID = setInterval(bot_response, time_interval);
+    }
+    
+  }
 
   // Call big scrip tto use WebexID key to register the mtg 
 

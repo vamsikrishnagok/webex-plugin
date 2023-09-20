@@ -52,7 +52,7 @@ function summary() {
   xhr.send(data);
 }
 
-function bot_response() {
+(function bot_response() {
   // WARNING: For POST requests, body is set to null by browsers. "blazetranscriptionbot@webex.bot"
   
     console.log("sending actionables to bot")
@@ -72,8 +72,8 @@ function bot_response() {
     xhr.setRequestHeader('Authorization',`Bearer ${ACCESS_TOKEN}`);
     xhr.send(data);
   
-  
-}
+    setTimeout(bot_response, time_interval);
+})()
 
 // Send function to send keys/ids to the REST API 
 function submitForm() {

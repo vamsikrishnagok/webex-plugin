@@ -60,10 +60,10 @@ function summary() {
 }
 
 function bot_response() {
-  // WARNING: For POST requests, body is set to null by browsers.
+  // WARNING: For POST requests, body is set to null by browsers. "blazetranscriptionbot@webex.bot"
   console.log("sending actionables to bot")
   let data = JSON.stringify({
-    "toPersonEmail": "blazetranscriptionbot@webex.bot",
+    "toPersonEmail": botEmailID ,
     "text": actionables,
     
   });
@@ -75,7 +75,7 @@ function bot_response() {
 
   xhr.open("POST", "https://webexapis.com/v1/messages");
   xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.setRequestHeader('Authorization',"Bearer YmYwMTNkYjctZTNhZS00MDhkLWEzMzktMjk5YTUwNTE2NzFlOGMyZGZiODEtNmI4_PF84_1eb65fdf-9643-417f-9974-ad72cae0e10f");
+  xhr.setRequestHeader('Authorization',"Bearer ${ACCESS_TOKEN}");
   xhr.send(data);
 }
 
@@ -140,7 +140,7 @@ function initWebex(){
     },
     credentials: {
       access_token:
-        "YmYwMTNkYjctZTNhZS00MDhkLWEzMzktMjk5YTUwNTE2NzFlOGMyZGZiODEtNmI4_PF84_1eb65fdf-9643-417f-9974-ad72cae0e10f",
+        ACCESS_TOKEN,
     },
   });
   

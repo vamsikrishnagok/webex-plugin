@@ -1,4 +1,3 @@
-var app = new window.Webex.Application();
 let webex;
 let receiveTranscriptionOption = true;
 let transcript_final_result = {"transcript":""};
@@ -9,13 +8,6 @@ var ACCESS_TOKEN = ""
 let is_bot = false
 let botEmailID = ""
 let time_interval = 10000
-// Wait for onReady() promise to fulfill before using framework
-app.onReady().then(() => {
-  log("App ready. Instance", app);
-}).catch((errorcode) =>  {
-  log("Error with code: ", Webex.Application.ErrorCodes[errorcode])
-});
-
 
 
 function summary() {

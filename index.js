@@ -190,9 +190,6 @@ function register(){
   });
 }
 
-function setBotInterval(){
-  const 
 
-}
 const intervalID = setInterval(summary, 10000);
 

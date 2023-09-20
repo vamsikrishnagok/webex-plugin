@@ -1,9 +1,22 @@
+var app = new window.Webex.Application();
 let webex;
 let receiveTranscriptionOption = true;
 let transcript_final_result = {"transcript":""};
 let meetings;
 let current_meeting;
 let actionables="";
+var ACCESS_TOKEN = ""
+let is_bot = false
+let botEmailID = ""
+let time_interval = 10000
+// Wait for onReady() promise to fulfill before using framework
+app.onReady().then(() => {
+  log("App ready. Instance", app);
+}).catch((errorcode) =>  {
+  log("Error with code: ", Webex.Application.ErrorCodes[errorcode])
+});
+
+
 
 function summary() {
   // WARNING: For POST requests, body is set to null by browsers.
@@ -36,7 +49,7 @@ function summary() {
       let timeContainer = document.getElementById('timeContainer')
       timeContainer.innerHTML = `<div>${time}</div>`
 
-      bot_response()
+      // index.html
     }
   });
   
@@ -66,79 +79,128 @@ function bot_response() {
   xhr.send(data);
 }
 
+// Send function to send keys/ids to the REST API 
+function submitForm() {
+  var webexId = document.getElementById("access-token").value;
+  botEmailID = document.getElementById("bot-email-id").value;
+  interval = document.getElementById("bot-email-id").value;
+
+  if (botEmailID !== "") {
+    is_bot = true
+    if (interval !==""){
+      time_interval = 60000 * interval
+    }
+  }
 
 
-webex = window.webex = Webex.init({
-  config: {
-    logger: {
-      level: "debug",
-    },
-    meetings: {
-      reconnection: {
-        enabled: true,
+  // Call big scrip tto use WebexID key to register the mtg 
+
+  ACCESSTOKEN = webexId; 
+  registerMeeting();
+
+  if(is_bot===true){
+    setBotInterval()
+  }
+
+
+}
+
+function registerMeeting() {
+
+  console.log("Entered script, got access token"); 
+  console.log(ACCESSTOKEN);
+
+  initWebex(); 
+  console.log("Initialized Webex"); 
+
+  setTimeout(function() {
+      register();
+      console.log("Register meeting");
+  }, 2000); 
+
+  
+}
+
+function initWebex(){
+  webex = window.webex = Webex.init({
+    config: {
+      logger: {
+        level: "debug",
       },
-      enableRtx: true,
-      experimental: {
-        enableUnifiedMeetings: true,
+      meetings: {
+        reconnection: {
+          enabled: true,
+        },
+        enableRtx: true,
+        experimental: {
+          enableUnifiedMeetings: true,
+        },
       },
+      // Any other sdk config we need
     },
-    // Any other sdk config we need
-  },
-  credentials: {
-    access_token:
-      "YmYwMTNkYjctZTNhZS00MDhkLWEzMzktMjk5YTUwNTE2NzFlOGMyZGZiODEtNmI4_PF84_1eb65fdf-9643-417f-9974-ad72cae0e10f",
-  },
-});
+    credentials: {
+      access_token:
+        "YmYwMTNkYjctZTNhZS00MDhkLWEzMzktMjk5YTUwNTE2NzFlOGMyZGZiODEtNmI4_PF84_1eb65fdf-9643-417f-9974-ad72cae0e10f",
+    },
+  });
+  
+  webex.once("ready", () => {
+    console.log("Authentication#initWebex() :: Webex Ready");
+  });
+}
 
-webex.once("ready", () => {
-  console.log("Authentication#initWebex() :: Webex Ready");
-});
 
-webex.meetings.register().then(() => {
-  console.log("successful registered");
-  webex.meetings
-    .syncMeetings()
-    .then(
-      () =>
-        new Promise((resolve) => {
-          setTimeout(() => resolve(), 3000);
-        })
-    )
-    .then(() => {
-      console.log(
-        "MeetingsManagement#collectMeetings() :: successfully collected meetings"
-      );
-      meetings = webex.meetings.getAllMeetings();
 
-      if (webex.meetings.registered) {
-        console.log(meetings);
-        current_meeting = meetings[Object.keys(meetings)[0]];
-        console.log(current_meeting);
-        current_meeting.on(
-          "meeting:receiveTranscription:started",
-          (payload) => {
-            if (payload["type"]=="transcript_final_result"){
-              transcript_final_result["transcript"] = transcript_final_result["transcript"] + ", " + payload["transcription"];
+function register(){
+  webex.meetings.register().then(() => {
+    console.log("successful registered");
+    webex.meetings
+      .syncMeetings()
+      .then(
+        () =>
+          new Promise((resolve) => {
+            setTimeout(() => resolve(), 3000);
+          })
+      )
+      .then(() => {
+        console.log(
+          "MeetingsManagement#collectMeetings() :: successfully collected meetings"
+        );
+        meetings = webex.meetings.getAllMeetings();
+  
+        if (webex.meetings.registered) {
+          console.log(meetings);
+          current_meeting = meetings[Object.keys(meetings)[0]];
+          console.log(current_meeting);
+          current_meeting.on(
+            "meeting:receiveTranscription:started",
+            (payload) => {
+              if (payload["type"]=="transcript_final_result"){
+                transcript_final_result["transcript"] = transcript_final_result["transcript"] + ", " + payload["transcription"];
+                
+              }
+             
+              console.log(transcript_final_result)
               
             }
-           
-            console.log(transcript_final_result)
-            
-          }
-        );
-      }
-      const joinOptions = {
-        moveToResource: false,
-        resourceId: webex.devicemanager._pairedDevice
-          ? webex.devicemanager._pairedDevice.identity.id
-          : undefined,
-        receiveTranscription: receiveTranscriptionOption,
-      };
+          );
+        }
+        const joinOptions = {
+          moveToResource: false,
+          resourceId: webex.devicemanager._pairedDevice
+            ? webex.devicemanager._pairedDevice.identity.id
+            : undefined,
+          receiveTranscription: receiveTranscriptionOption,
+        };
+  
+        current_meeting.join(joinOptions);
+      });
+  });
+}
 
-      current_meeting.join(joinOptions);
-    });
-});
+function setBotInterval(){
+  const botIntervalID = setInterval(bot_response, time_interval);
 
-const intervalID = setInterval(summary, 20000);
+}
+const intervalID = setInterval(summary, 10000);
 
-// const botIntervalID = setInterval(bot_response, 200000);

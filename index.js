@@ -54,22 +54,25 @@ function summary() {
 
 function bot_response() {
   // WARNING: For POST requests, body is set to null by browsers. "blazetranscriptionbot@webex.bot"
-  console.log("sending actionables to bot")
-  let data = JSON.stringify({
-    "toPersonEmail": botEmailID ,
-    "text": actionables,
+  
+    console.log("sending actionables to bot")
+    let data = JSON.stringify({
+      "toPersonEmail": botEmailID ,
+      "text": actionables,
+      
+    });
     
-  });
-  
-  var xhr = new XMLHttpRequest();
-  xhr.withCredentials = false;
-  
-  
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = false;
+    
+    
 
-  xhr.open("POST", "https://webexapis.com/v1/messages");
-  xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.setRequestHeader('Authorization',`Bearer ${ACCESS_TOKEN}`);
-  xhr.send(data);
+    xhr.open("POST", "https://webexapis.com/v1/messages");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader('Authorization',`Bearer ${ACCESS_TOKEN}`);
+    xhr.send(data);
+  
+  
 }
 
 // Send function to send keys/ids to the REST API 
@@ -85,15 +88,16 @@ function submitForm() {
     }
   }
   if(is_bot===true){
-    botIntervalID = setInterval(bot_response, time_interval);
+    if(!botIntervalID){
+      botIntervalID = setInterval(bot_response, time_interval);
+    }
+    
   }
 
   // Call big scrip tto use WebexID key to register the mtg 
 
   ACCESS_TOKEN = webexId; 
   registerMeeting();
-
-  
 
 
 }

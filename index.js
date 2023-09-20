@@ -4,11 +4,11 @@ let transcript_final_result = {"transcript":""};
 let meetings;
 let current_meeting;
 let actionables="";
-var ACCESS_TOKEN = ""
-let is_bot = false
-let botEmailID = ""
-let time_interval = 10000
-
+var ACCESS_TOKEN = "";
+let is_bot = false;
+let botEmailID = "";
+let time_interval = 10000;
+let botIntervalID;
 
 function summary() {
   // WARNING: For POST requests, body is set to null by browsers.
@@ -83,16 +83,16 @@ function submitForm() {
       time_interval = 60000 * interval
     }
   }
-
+  if(is_bot===true){
+    botIntervalID = setInterval(bot_response, time_interval);
+  }
 
   // Call big scrip tto use WebexID key to register the mtg 
 
   ACCESS_TOKEN = webexId; 
   registerMeeting();
 
-  if(is_bot===true){
-    setBotInterval()
-  }
+  
 
 
 }
@@ -191,7 +191,7 @@ function register(){
 }
 
 function setBotInterval(){
-  const botIntervalID = setInterval(bot_response, time_interval);
+  const 
 
 }
 const intervalID = setInterval(summary, 10000);

@@ -89,7 +89,7 @@ function submitForm() {
   }
   if(is_bot===true){
     if(!botIntervalID){
-      
+      botIntervalID = setInterval(bot_response, time_interval);
     }
     
   }
@@ -195,6 +195,6 @@ function register(){
   });
 }
 
-botIntervalID = setInterval(bot_response, 10000);
+
 const intervalID = setInterval(summary, 10000);
 
